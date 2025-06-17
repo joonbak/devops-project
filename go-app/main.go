@@ -32,6 +32,6 @@ func main() {
 	mux.Handle("/metrics", promhttp.Handler())
 	mux.HandleFunc("/", handler)
 
-	log.Println("Server Listening on Port 8080")
-	log.Fatal(http.ListenAndServe(":8080", mux))
+	log.Println("Server Listening on Port 8000")
+	log.Fatal(http.ListenAndServe(":8000", mux))
 }

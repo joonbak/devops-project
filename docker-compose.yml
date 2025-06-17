@@ -1,13 +1,44 @@
 services:
+  traefik:
+    image: traefik:v3.1
+    container_name: traefik
+    restart: always
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+      # - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=example@email.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - letsencrypt:/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - backend
   go-app:
     build: ./go-app
     image: go-app
     container_name: go-app
     restart: always
-    ports:
-      - "8080:8080"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.go-app.rule=Host(`app.localhost`)"
+      - "traefik.http.routers.go-app.entrypoints=websecure"
+      - "traefik.http.routers.go-app.tls.certresolver=myresolver"
+    expose:
+      - "8000"
     networks:
       - backend
+
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
@@ -37,3 +68,4 @@ networks:
 
 volumes:
   grafana-storage:
+  letsencrypt:
