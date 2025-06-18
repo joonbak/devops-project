@@ -51,4 +51,4 @@ jobs:
         with:
           context: ./go-app
           push: true
-          tags: ${{ secrest.DOCKER_USERNAME }}/go-app:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/go-app:latest
