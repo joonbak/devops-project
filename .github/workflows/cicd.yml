@@ -1,0 +1,30 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Setup Go v1.22.2
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22.2"
+
+      - name: Install dependencies
+        run: go get .
+        working-directory: ./go-app
+
+      - name: Build step
+        run: go build -v ./...
+        working-directory: ./go-app
+
+      - name: Testing
+        run: go test
+        working-directory: ./go-app
