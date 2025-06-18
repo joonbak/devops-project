@@ -2,10 +2,7 @@ module github.com/joonbak/devops-project/app/go-app
 
 go 1.22.2
 
-require (
-	github.com/prometheus/client_golang v1.22.0
-	golang.org/x/text v0.21.0
-)
+require github.com/prometheus/client_golang v1.22.0
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
