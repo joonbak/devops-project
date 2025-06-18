@@ -1,4 +1,4 @@
-module github.com/joonbak/devops-project/app/go-app
+module github.com/joonbak/devops-project/go-app
 
 go 1.22.2
 
