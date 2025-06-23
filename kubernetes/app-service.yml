@@ -3,11 +3,9 @@ kind: Service
 metadata:
   name: go-app-service
 spec:
-  type: NodePort
   selector:
     app: go-app
   ports:
     - protocol: TCP
       port: 80
       targetPort: 8000
-      nodePort: 30007
