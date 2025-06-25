@@ -2,11 +2,17 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: go-app-ingress
+  namespace: dev
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: web
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    cert-manager.io/issuer: letsencrypt-staging
 spec:
+  tls:
+    - hosts:
+        - app.localhost
+      secretName: go-app-tls
   rules:
-    - host: go-app.localhost
+    - host: app.localhost
       http:
         paths:
           - path: /
